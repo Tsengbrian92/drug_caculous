@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日幣代購 & 藥品定價計算</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .rate {
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+    <script>
+        function calculatePrice() {
+            let currencyType = document.getElementById("currency_type").value;
+            let price = document.getElementById("price").value;
+            let weight = document.getElementById("weight").value;
+
+            fetch("/calculate", {
+                method: "POST",
+                body: new URLSearchParams({
+                    "currency_type": currencyType,
+                    "price": price,
+                    "weight": weight
+                }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("result").innerText = "最終售價: " + data.final_price + " TWD";
+                    document.getElementById("exchange_rate").innerText = "最新匯率: " + data.exchange_rate + " TWD";
+                }
+            })
+            .catch(error => console.error("錯誤:", error));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>日幣代購 & 藥品定價計算</h1>
+
+        <label for="currency_type">選擇價格輸入類型:</label>
+        <select id="currency_type">
+            <option value="twd">台幣 (TWD)</option>
+            <option value="jpy">日幣 (JPY)</option>
+        </select>
+
+        <label for="price">輸入價格:</label>
+        <input type="number" id="price" placeholder="請輸入價格">
+
+        <label for="weight">輸入重量 (g):</label>
+        <input type="number" id="weight" placeholder="請輸入重量 (克)">
+
+        <button onclick="calculatePrice()">計算</button>
+
+        <p id="exchange_rate" class="rate">最新匯率: 請按計算</p>
+        <p id="result">最終售價: </p>
+    </div>
+</body>
+</html>
