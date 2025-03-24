@@ -90,6 +90,7 @@
                     alert(data.error);
                 } else {
                     document.getElementById("result").innerText = "最終售價: " + data.final_price + " TWD";
+                    document.getElementById("shopee_price").innerText = "蝦皮售價: " + data.shopee_price + " TWD";
                     document.getElementById("exchange_rate").innerText = "最新匯率: " + data.exchange_rate + " TWD";
                 }
             })
@@ -117,6 +118,7 @@
 
         <p id="exchange_rate" class="rate">最新匯率: 請按計算</p>
         <p id="result">最終售價: </p>
+        <p id="shopee_price">蝦皮售價: </p>
     </div>
 </body>
 </html>

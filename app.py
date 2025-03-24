@@ -13,7 +13,7 @@ def fetch_exchange_rate():
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
     }
-    
+
     try:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -68,8 +68,11 @@ def calculate():
     if final_price is None:
         return jsonify({"error": "計算錯誤"}), 400
 
+    shopee_price = round(final_price * 1.15)
+
     return jsonify({
         "final_price": final_price,
+        "shopee_price": shopee_price,
         "exchange_rate": exchange_rate
     })
 
