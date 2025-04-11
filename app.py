@@ -39,9 +39,9 @@ def calculate_price(currency_type, price, weight, exchange_rate):
     weight = float(weight)
 
     if currency_type == "twd":
-        final_price = (price * 0.96 + weight * 0.3) * 1.3
+        final_price = (price * 0.96 + weight * 0.3) * 1.2
     elif currency_type == "jpy":
-        final_price = (price * exchange_rate + weight * 0.3) * 1.3
+        final_price = (price * exchange_rate + weight * 0.3) * 1.2
     else:
         return None
 
